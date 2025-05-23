@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "versao": "1.0",
+    "data_salvamento": "2025-05-23T12:08:28.775923",
+    "sistema": "Tarefas Domésticas"
+  },
+  "dados": {
+    "residencia": {
+      "id": "casa_9acd23a3",
+      "nome_casa": "Casa Principal",
+      "data_criacao": "2025-05-23T10:57:43.863602",
+      "moradores": []
+    },
+    "atividades": []
+  }
+}
