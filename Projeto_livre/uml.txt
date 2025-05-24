@@ -1,0 +1,72 @@
++-----------------------+                 +--------------------------+                     +----------------------------------+
+|	Pessoa          |                 |Classe Categoria_atividade|                     |  Classe Gerar_Relatorios         |
+|-----------------------+                 |--------------------------|                     |----------------------------------|
+|                       |                 | cozinha: string          |                     |                                  |
+| - nome: string        |                 | limpeza: string          |                     |----------------------------------|
+| - data_cadastro: data |                 | jardim: string           |                     | relatorio_performance_moradores()|
+|                       |                 | roupas: string           |                     | ranking_melhores_moradores()     |
+|-----------------------+                 | manutencao: string       |                     | estatisticas_por_categoria()     |
+|	                |                 |--------------------------|                     | historico_tarefas_mes()          |  
+|+ obter_informacoes()  |                 +--------------------------+                     | relatorio_produtividade_diaria() |
+|+ tempo_cadastrado()   |                                                                  |                                  |
+|                       |                                                                  +----------------------------------+
++-----------------------+                                                                        |
+          ^                                                                                      |
+          o                                                                                      |
+          |                                                                                      | 
+          |                                                                                      |
++----------------------------------+            +---------------------------------+              |     
+ |	Morador                    |            |Classe Atividade_domestica.      |              |
+ |----------------------------------+           |---------------------------------|              |
+|                                  |            | id_atividade: string            |              |
+| - pontos_realizados: int         |            | categoria: CategoriaAtividade   |              |
+| -  disponível: true/false        |            | nome_tarefa: string             |              |
+| - historico_tarefas: list[string]|<-----------| status: string                  |              ---------
+| - nivel_performance: string      |            | descricao: string               |                       | 
+|                                  |            | data_criacao: data_hora.        |                       |
+|                                  |            | responsavel: list[Morador]      |                       |
+|----------------------------------+            | pontos: int                     |                       |
+|+ finalizar_tarefa(): void        |            |---------------------------------|                       |
+|+ calcular_desempenho(): dict     |            | marcar_finalizada()             |                       |
+|+ marcar_finalizada(): bool       |            | obter_detalhes()                |                       |
+| cancelar_atividade()             |            | cancelar_atividade()            |                       |
+|+ marcar_cancelada(): bool        |            | +CRUD: Create/Read/Update/Delete|                       |
+|+ obter_detalhes(): dict          |            +---------------------------------+                       |  
+|+ CRUD: Create/Read/Update/Delete |                                                                      |
+|                                  |<x>------|                                                            |    +-----------------------------+ 
+|-----------------------------------+        |                                                            |    | sistema_tarefas.json.backup |
+                                             |                                                            |    |-----------------------------|
+                                             |                                                            |    | backup[sistema_tarefas.json |
+               -------------------------------                                                            |    +-----------------------------+
+               |                                                                                          |                 |
+               |                           +----------------------------------------------------+        |                  -----------------
++----------------------------------+       |Classe Gerenciador_de_tarefas                       |         |                                  |
+|   Classe Residencia             |        |----------------------------------------------------|<---------                                  |
+|---------------------------------|        | residencia: Residencia                             |                                            |
+| id: string                      |        | lista_atividades: Lista[AtividadeDomestica]        |              +-------------------------+   | 
+| moradores: list[Morador]        |        | armazenamento: ArmazenamentoDados                  |              | sistema_tarefas.json    |.  |
+| nome_casa: string               |        |----------------------------------------------------|              |-------------------------+   |
+|                                 |        | marcar_finalizada()                                |<-------------|                         |<---  
+|---------------------------------|        | obter_detalhes()                                   |              |  arquivo_json: string   |
+|                                 |        | atribuir_depois()                                  |              |  arquivo/-backup: string|
+| adicionar_morador(): bool       |        | +CRUD: tarefas+moradores: Create/Read/Update/Delete|              |-------------------------|
+| remover_morador(): bool         |        +----------------------------------------------------+              | salvar_emjson(dados)    |
+| listar_moradores(): list        |                 ^                                                          | carregar_em_json()      |
+| obter_ranking(): list           |                 |                                                          | fazer_bakup()           |
+| +CRUD: Create/Read/Update/Delete|                 |                                                          | validar_integridade()   |
+|                                 |                 |                                                          +-------------------------+
++---------------------------------+                 |                                                          
+                                                    |
++----------------------------------+                |
+|  Classe Gerar_Relatorios         |                |
+|----------------------------------|-----------------
+|                                  |
+|----------------------------------|
+|                                  |
+| relatorio_performance_moradores()|
+| ranking_melhores_moradores()     |
+| estatisticas_por_categoria()     |
+| historico_tarefas_mes().         |  
+| relatorio_produtividade_diaria() |
+|                                  |
++----------------------------------+
