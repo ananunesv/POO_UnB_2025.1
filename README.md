@@ -1,225 +1,226 @@
-# 🏡 Sistema de Controle de Tarefas Domésticas
+# Sistema de Controle de Tarefas Domésticas
 
-Um sistema desktop elegante para gerenciar tarefas domésticas, desenvolvido em Python com interface gráfica moderna.
+**Universidade de Brasília - UnB**  
+**Disciplina:** Programação Orientada a Objetos  
+**Desenvolvido por:** Ana Luisa  
 
-## 📋 Definição do Problema
+## 📋 Visão Geral
 
-O sistema resolve a necessidade de organizar e distribuir tarefas domésticas entre os moradores de uma casa, permitindo:
+Sistema desktop para gerenciar tarefas domésticas entre moradores de uma residência. O projeto demonstra a aplicação prática dos conceitos fundamentais de POO através de um problema real: organizar quem faz o quê em casa e reconhecer quem mais contribui.
 
-- ✅ Cadastrar tarefas por categoria (Cozinha, Limpeza, Jardim, etc.)
-- 👥 Associar responsáveis às tarefas
-- 📊 Acompanhar o desempenho dos moradores
-- 🏆 Ranking de quem mais contribui com as atividades
-- 💾 Salvar dados em arquivo JSON
+### O que o sistema faz:
+- Cadastra moradores e tarefas domésticas
+- Atribui responsáveis e acompanha conclusões
+- Calcula pontos por tarefa realizada
+- Gera ranking e relatórios de desempenho
+- Salva tudo automaticamente em arquivo JSON
+
+## 🎯 Conceitos de POO Aplicados
+
+O projeto implementa todos os pilares da orientação a objetos:
+
+1. **Herança**: `Pessoa` (abstrata) → `Morador`
+2. **Polimorfismo**: Método `obter_informacoes()` com comportamentos diferentes
+3. **Encapsulamento**: Atributos privados (`_nome`) com getters/setters
+4. **Abstração**: Classe abstrata `Pessoa` define contrato
+5. **Composição**: `Residencia` contém lista de `Moradores`
+6. **Mixin**: `GerarRelatorios` adiciona funcionalidades extras
 
 ## 📖 Casos de Uso
 
-### **UC01 - Gerenciar Moradores**
-**Ator:** Usuário do Sistema  
-**Descrição:** Cadastrar, listar e gerenciar moradores da casa
+### UC01 - Gerenciar Moradores
+
+**Descrição:** Permite cadastrar, editar e excluir moradores da casa.
 
 **Fluxo Principal:**
-1. Usuário acessa a tela de moradores
-2. Sistema exibe lista de moradores cadastrados
-3. Usuário pode adicionar novo morador informando nome
-4. Sistema salva morador e atualiza a lista
-5. Sistema exibe pontuação atual de cada morador
+1. Usuário acessa aba "Moradores"
+2. Sistema mostra lista com ranking, pontos e status
+3. Usuário escolhe ação:
+   - **Novo**: Informa nome (2-50 caracteres, só letras)
+   - **Editar**: Altera nome ou disponibilidade
+   - **Excluir**: Remove após confirmação
+4. Sistema valida, executa e salva automaticamente
 
-### **UC02 - Criar Nova Tarefa**
-**Ator:** Usuário do Sistema  
-**Descrição:** Criar uma nova atividade doméstica
+**Validações:**
+- Nome único por residência
+- Apenas letras e espaços permitidos
+- Ao excluir, tarefas pendentes ficam sem responsável
 
-**Fluxo Principal:**
-1. Usuário clica em "Nova Tarefa"
-2. Sistema exibe formulário com:
-   - Categoria (Cozinha, Limpeza, Jardim, Roupas, Manutenção)
-   - Nome da tarefa
-   - Descrição
-   - Responsável
-3. Usuário preenche dados e confirma
-4. Sistema cria tarefa com status "PENDENTE"
-5. Sistema atualiza lista de tarefas
+---
 
-### **UC03 - Gerenciar Status das Tarefas**
-**Ator:** Usuário do Sistema  
-**Descrição:** Marcar tarefas como finalizadas ou canceladas
+### UC02 - Criar e Gerenciar Tarefas
+
+**Descrição:** Controla o ciclo completo das tarefas domésticas.
 
 **Fluxo Principal:**
-1. Usuário visualiza lista de tarefas
-2. Sistema exibe tarefas com status atual
-3. Usuário seleciona tarefa e altera status
-4. Para tarefas FINALIZADAS: sistema adiciona pontos ao responsável
-5. Sistema atualiza dados e salva no arquivo JSON
+1. Usuário clica em "Nova Atividade"
+2. Sistema abre formulário com:
+   - **Categoria** (define pontos):
+     - 🍽️ Cozinha: 15 pontos
+     - 🧹 Limpeza: 10 pontos  
+     - 🌱 Jardim: 12 pontos
+     - 🧺 Roupas: 8 pontos
+     - 🔧 Manutenção: 20 pontos
+   - **Nome da tarefa** (mínimo 3 caracteres)
+   - **Descrição** (opcional)
+   - **Responsável** (opcional)
+3. Sistema cria com status "Pendente"
+4. Usuário gerencia tarefas:
+   - **Finalizar**: Adiciona pontos ao responsável
+   - **Cancelar**: Não gera pontos
+   - **Excluir**: Remove permanentemente
 
-### **UC04 - Visualizar Relatórios**
-**Ator:** Usuário do Sistema  
-**Descrição:** Consultar estatísticas e ranking dos moradores
+**Estados das Tarefas:**
+- ⏳ Pendente (amarelo)
+- ✅ Finalizada (verde)  
+- ❌ Cancelada (vermelho)
 
-**Fluxo Principal:**
-1. Usuário acessa aba "Relatórios"
-2. Sistema exibe:
-   - Ranking dos moradores por pontos
-   - Estatísticas por categoria
-   - Gráfico de desempenho
-   - Histórico de tarefas do mês
-3. Usuário pode filtrar dados por período
+---
 
-### **UC05 - Persistir Dados**
-**Ator:** Sistema  
-**Descrição:** Salvar e carregar dados automaticamente
+### UC03 - Visualizar Dashboard
 
-**Fluxo Principal:**
-1. Sistema carrega dados do arquivo JSON na inicialização
-2. A cada operação, sistema salva dados automaticamente
-3. Sistema faz backup dos dados periodicamente
-4. Em caso de erro, sistema restaura backup anterior
+**Descrição:** Tela inicial com resumo do sistema.
 
-## 🛠️ Instalação e Execução
+**O que mostra:**
+- Cards com estatísticas:
+  - Total de moradores
+  - Total de tarefas
+  - Tarefas pendentes
+  - Tarefas finalizadas
+- Lista das 10 atividades mais recentes
+- Botão para atualizar dados
 
-### **Pré-requisitos:**
-- Python 3.8 ou superior
-- Bibliotecas incluídas: tkinter, json, datetime, enum
+---
 
-### **Passo a Passo:**
+### UC04 - Gerar Relatórios
 
-1. **Clone ou baixe o projeto:**
-```bash
-git clone [seu-repositorio]
-cd sistema-tarefas-domesticas
-```
+**Descrição:** Três tipos de análises disponíveis.
 
-2. **Estrutura de pastas:**
-```
-sistema-tarefas-domesticas/
-├── README.md
-├── main.py
-├── package/
-│   ├── __init__.py
-│   ├── models/
-│   │   ├── __init__.py
-│   │   ├── pessoa.py
-│   │   ├── morador.py
-│   │   ├── atividade_domestica.py
-│   │   ├── residencia.py
-│   │   └── enums.py
-│   ├── controllers/
-│   │   ├── __init__.py
-│   │   ├── gerenciador_tarefas.py
-│   │   └── armazenamento_dados.py
-│   ├── mixins/
-│   │   ├── __init__.py
-│   │   └── gerar_relatorios.py
-│   └── views/
-│       ├── __init__.py
-│       └── interface_visual.py
-├── dados/
-│   └── sistema_tarefas.json
-└── assets/
-    └── icones/
-```
+**Tipos de Relatório:**
 
-3. **Execute o sistema:**
-```bash
-python main.py
-```
+1. **🏆 Ranking**: 
+   - Lista ordenada por pontos
+   - Medalhas para top 3
+   - Mostra nível e total de tarefas
 
-## 🎯 Funcionalidades Implementadas
+2. **📊 Por Categoria**:
+   - Total de tarefas por tipo
+   - Taxa de conclusão
+   - Pontuação média
 
-### **✅ Core do Sistema:**
-- [x] Classes com todos os relacionamentos POO (Herança, Polimorfismo, Mixin, Composição, Associação)
-- [x] Persistência em JSON (Serialização de objetos)
-- [x] Interface gráfica elegante para desktop
-- [x] Sistema completo de gerenciamento de tarefas
+3. **📈 Performance Individual**:
+   - Análise detalhada por morador
+   - Tempo de cadastro
+   - Categorias favoritas
 
-### **✅ Interface Visual:**
-- [x] Tela principal com abas organizadas
-- [x] Lista de tarefas com filtros por categoria
-- [x] Formulários para criar tarefas e moradores
-- [x] Dashboard com estatísticas e ranking
-- [x] Design moderno e responsivo
+---
 
-### **✅ Funcionalidades de Negócio:**
-- [x] Cadastro de moradores com sistema de pontos
-- [x] Criação de tarefas por categoria
-- [x] Atribuição automática e manual de responsáveis
-- [x] Sistema de status (Pendente, Finalizada, Cancelada)
-- [x] Relatórios de desempenho e ranking
-- [x] Backup automático dos dados
+### UC05 - Persistência Automática
 
-## 🏗️ Arquitetura
+**Descrição:** Sistema salva dados automaticamente.
 
-O sistema segue o padrão **MVC** com aplicação rigorosa dos conceitos de **POO**:
+**Como funciona:**
+1. Ao iniciar, carrega dados do JSON
+2. A cada mudança, cria backup e salva
+3. Se houver erro, restaura do backup
+4. Estrutura JSON preserva todos os objetos
 
-### **Model (package/models/):**
-- Pessoa (Classe abstrata)
-- Morador (Herança + Polimorfismo)
-- AtividadeDomestica (Entidade principal)
-- Residencia (Composição forte)
-- Enums (CategoriaAtividade, SituacaoTarefa)
-
-### **Controller (package/controllers/):**
-- GerenciadorTarefas (Classe controladora + Mixin)
-- ArmazenamentoDados (Persistência JSON)
-
-### **View (package/views/):**
-- InterfaceVisual (Interface gráfica Tkinter)
-
-### **Mixin (package/mixins/):**
-- GerarRelatorios (Funcionalidades extras de relatórios)
-
-## 📊 Banco de Dados (JSON)
-
-O sistema utiliza serialização JSON para persistir os dados:
-
+**Formato dos dados:**
 ```json
 {
-  "residencia": {
-    "nome_casa": "Casa da Família Silva",
-    "moradores": [...]
+  "metadata": {
+    "versao": "1.0",
+    "data_salvamento": "2025-05-23T12:08:28",
+    "sistema": "Tarefas Domésticas"
   },
-  "atividades": [
-    {
-      "id_atividade": "ativ_001",
-      "categoria": "LIMPEZA",
-      "nome_tarefa": "Varrer a sala",
-      "situacao": "PENDENTE",
-      "responsavel_id": "morador_001"
-    }
-  ]
+  "dados": {
+    "residencia": { ... },
+    "atividades": [ ... ]
+  }
 }
 ```
 
-## 🎮 Como Usar
+## 🏗️ Arquitetura MVC
 
-1. **Inicie o sistema** executando `main.py`
-2. **Cadastre moradores** na aba "Moradores"
-3. **Crie tarefas** clicando em "Nova Tarefa"
-4. **Gerencie status** das tarefas na lista principal
-5. **Consulte relatórios** na aba "Relatórios"
-6. **Dados são salvos automaticamente**
+O projeto segue o padrão Model-View-Controller:
 
-## 🏆 Conceitos POO Aplicados
+```
+VIEW (interface_visual.py)
+    ↓
+CONTROLLER (gerenciador_tarefas.py + mixin)
+    ↓
+MODEL (pessoa, morador, atividade, residencia)
+    ↓
+PERSISTÊNCIA (armazenamento_dados.py → JSON)
+```
 
-- ✅ **Herança:** Pessoa → Morador
-- ✅ **Polimorfismo:** `obter_informacoes()`
-- ✅ **Mixin:** GerarRelatorios
-- ✅ **Composição:** Residencia ♦ Morador
-- ✅ **Associação:** AtividadeDomestica ↔ Morador
-- ✅ **Encapsulamento:** Todas as classes
+### Estrutura de Pastas:
+```
+sistema-tarefas-domesticas/
+├── main.py                 # Ponto de entrada
+├── package/
+│   ├── models/            # Classes do domínio
+│   ├── controllers/       # Lógica de negócio
+│   ├── mixins/           # Funcionalidades extras
+│   └── views/            # Interface gráfica
+└── dados/                # Arquivos JSON
+```
 
-## 🚀 Tecnologias
+## 💻 Como Executar
 
-- **Python 3.8+**
-- **Tkinter** (Interface gráfica)
-- **JSON** (Persistência de dados)
-- **Datetime** (Manipulação de datas)
-- **Enum** (Enumerações)
+**Requisitos:** Python 3.8+ (Tkinter já vem incluído)
 
-## 📝 Notas do Desenvolvedor
+```bash
+# Clone ou baixe o projeto
+cd sistema-tarefas-domesticas
 
-Este sistema foi desenvolvido como projeto acadêmico aplicando rigorosamente os conceitos de Programação Orientada a Objetos. Todas as funcionalidades são executadas localmente, sem necessidade de servidor web.
+# Execute
+python main.py
+```
 
-O foco foi criar uma aplicação desktop elegante, funcional e que demonstre domínio dos princípios de POO através de um caso de uso real e prático.
+## 🎨 Interface do Sistema
+
+A interface foi desenvolvida com Tkinter e possui:
+
+- **Design moderno** com tema de cores consistente
+- **4 abas principais**: Dashboard, Atividades, Moradores, Relatórios
+- **Diálogos modais** para formulários
+- **Feedback visual** com cores e emojis
+- **Mensagens de confirmação** para ações críticas
+
+## 📊 Regras de Negócio Principais
+
+1. **Pontuação**: Só é atribuída quando tarefa é finalizada
+2. **Nomes únicos**: Não permite moradores com mesmo nome
+3. **Status imutável**: Tarefa finalizada não pode ser reaberta
+4. **Ranking**: Considera apenas moradores com pontos > 0
+5. **Níveis de performance**:
+   - 🆕 Novato: 0-4 pontos
+   - 🌱 Iniciante: 5-19 pontos
+   - 📈 Intermediário: 20-49 pontos
+   - ⭐ Avançado: 50-99 pontos
+   - 🏆 Expert: 100+ pontos
+
+## 🚀 Tecnologias Utilizadas
+
+- **Python 3.8+**: Linguagem principal
+- **Tkinter**: Interface gráfica nativa
+- **JSON**: Persistência de dados
+- **UUID**: Geração de IDs únicos
+- **Datetime**: Controle de datas
+- **Enum**: Categorias e estados
+
+## 📝 Considerações Finais
+
+Este projeto demonstra como aplicar POO em um sistema real e funcional. Cada conceito foi implementado com propósito claro:
+
+- **Herança** facilita extensão (podemos criar outros tipos de pessoa)
+- **Encapsulamento** protege dados críticos (pontos, IDs)
+- **Composição** modela relação natural (casa tem moradores)
+- **Mixin** evita repetição de código (relatórios)
+
+O sistema está pronto para uso e pode ser facilmente estendido com novas funcionalidades mantendo os princípios SOLID.
 
 ---
-**Desenvolvido com ❤️ para organizar as tarefas de casa!** 🏡✨
+**Universidade de Brasília**  
+**Projeto POO - 2025/1**
